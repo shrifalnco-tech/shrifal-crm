@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Receipt · Shrifal & Co.</title>
+<meta name="theme-color" content="#7A4A1F"><link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#F5ECE0;--ink:#3A2410;--muted:#7B6652;--brand:#7A4A1F;--onbrand:#fff;--line:#E2D2BC;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#1C1510;--ink:#F3E8D8;--muted:#BBA68E;--brand:#E2AB70;--onbrand:#1C1510;--line:#443523}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(16px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom))}
+main{max-width:460px;margin:0 auto;text-align:center}
+h1{font:700 20px Georgia,"Times New Roman",serif;color:var(--brand);margin:6px 0 2px}
+p{margin:4px 0;color:var(--muted);font-size:14px}
+img{display:block;width:100%;height:auto;margin:14px auto;border:1px solid var(--line);border-radius:12px;background:#FFFBF4}
+.btn{display:block;width:100%;margin-top:10px;padding:14px;border:0;border-radius:12px;font:600 16px system-ui,sans-serif;background:var(--brand);color:var(--onbrand);cursor:pointer}
+.btn.alt{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+a{color:var(--brand)}
+[hidden]{display:none!important}
+</style></head><body><main>
+<h1>Shrifal &amp; Co.</h1><p id="sub">Preparing your receipt…</p>
+<img id="im" alt="Receipt" hidden>
+<div id="acts" hidden>
+<button class="btn" id="bShare" hidden>Share receipt</button>
+<button class="btn" id="bImg">Save as image</button>
+<button class="btn alt" id="bPdf">Download PDF</button>
+</div>
+<p id="msg" role="status"></p>
+<p style="margin-top:18px">Questions? <a href="https://wa.me/919588651315">WhatsApp us</a></p>
+</main>
+<script src="jspdf.umd.min.js"></script>
+<script>
+function fmt(n){return Number(n||0).toLocaleString("en-IN")}
+function fd(s){var p=String(s||"").split("-");return p.length===3?p[2]+"-"+p[1]+"-"+p[0]:(s||"")}
+function tot(o){return(o.lines||[]).reduce(function(s,l){return s+(Number(l.qty)||0)*(Number(l.rate)||0)},0)}
+var P=null,O=null,imgFile=null;
+try{var h=location.hash.slice(1).replace(/-/g,"+").replace(/_/g,"/");P=JSON.parse(decodeURIComponent(escape(atob(h))))}catch(e){}
+if(P&&P.l){O={id:"x",date:P.d,ddate:P.e,pay:P.p,mode:P.m,note:P.t,cid:"c",_n:P.n,lines:P.l.map(function(a){return{size:a[0],qty:a[1],rate:a[2]}})}}
+function cust(){return{name:P.c}}
+function rno(o){return o._n}
+function imgName(o){return"Receipt-"+rno(o)+".png"}
+function rrect(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function mkImg(o){return new Promise(function(res,rej){try{
+ var K=8,cv=document.createElement("canvas");cv.width=105*K;cv.height=148*K;var g=cv.getContext("2d"),c=cust(o.cid)||{name:""},L=(o.lines||[]).filter(function(l){return Number(l.qty)}),paid=o.pay==="Paid",SANS="Helvetica,Arial,sans-serif",SERIF="Georgia,'Times New Roman',serif",yy;
+ function F(size,w,fam,st){g.font=(st||"normal")+" "+(w||"normal")+" "+size*K+"px "+(fam||SANS)}
+ function T(t,x,y,size,col,w,al,fam,st){F(size,w,fam,st);g.fillStyle=col;g.textAlign=al||"left";g.fillText(t,x*K,y*K)}
+ function wr(t,w){var ws=String(t).split(" "),ln=[],cur="";ws.forEach(function(x){var tt=cur?cur+" "+x:x;if(g.measureText(tt).width>w*K&&cur){ln.push(cur);cur=x}else cur=tt});if(cur)ln.push(cur);return ln}
+ g.fillStyle="#FFFBF4";g.fillRect(0,0,cv.width,cv.height);
+ g.strokeStyle="#7A4A1F";g.lineWidth=.8*K;rrect(g,3.5*K,3.5*K,98*K,141*K,3*K);g.stroke();
+ T("Shrifal & Co.",52.5,16,7.2,"#7A4A1F","bold","center",SERIF);
+ T("GRADED  ·  COUNTED  ·  DELIVERED ON TIME  |  KOLHAPUR",52.5,21,2.3,"#786450","normal","center");
+ T("ORDER RECEIPT",52.5,29,3.9,"#3A2410","bold","center");
+ g.strokeStyle="#4C8B2F";g.lineWidth=.5*K;g.beginPath();g.moveTo(38*K,32*K);g.lineTo(67*K,32*K);g.stroke();
+ yy=40;
+ [["Receipt no",rno(o)],["Order date",fd(o.date)],["Delivery date",o.ddate?fd(o.ddate):"To be confirmed"],["Customer",c.name||"-"]].forEach(function(r){F(3.1);var ln=wr(r[1],53);T(r[0],10,yy,3.1,"#786450");ln.forEach(function(t,i){T(t,42,yy+i*5,3.1,"#3A2410")});yy+=5.8*ln.length+.4});
+ yy+=2;g.fillStyle="#7A4A1F";g.fillRect(10*K,yy*K,85*K,7*K);
+ T("Grade",12,yy+4.8,3.1,"#fff","bold");T("Qty",52,yy+4.8,3.1,"#fff","bold","right");T("Rate",70,yy+4.8,3.1,"#fff","bold","right");T("Amount",93,yy+4.8,3.1,"#fff","bold","right");
+ yy+=7;
+ L.forEach(function(l){yy+=6.5;T(l.size,12,yy-1.8,3.1,"#3A2410");T(String(l.qty),52,yy-1.8,3.1,"#3A2410","normal","right");T(String(l.rate),70,yy-1.8,3.1,"#3A2410","normal","right");T(fmt(l.qty*l.rate),93,yy-1.8,3.1,"#3A2410","normal","right");g.strokeStyle="#D9C7AE";g.lineWidth=.2*K;g.beginPath();g.moveTo(10*K,yy*K);g.lineTo(95*K,yy*K);g.stroke()});
+ yy+=8;T("Total",12,yy,4,"#3A2410","bold");T("Rs "+fmt(tot(o)),93,yy,4,"#3A2410","bold","right");
+ yy+=7;T("Payment",10,yy,3.1,"#786450");T((paid?"PAID":"PAY LATER")+(paid&&o.mode?" ("+o.mode+")":""),42,yy,3.1,paid?"#4C8B2F":"#B3261E","bold");
+ if(o.note){F(2.7,"normal",SANS,"italic");wr("Note: "+o.note,85).slice(0,2).forEach(function(t,i){T(t,10,yy+6+i*3.4,2.7,"#786450","normal","left",SANS,"italic")})}
+ T("Thank you for choosing Shrifal & Co.",52.5,134,2.9,"#786450","normal","center");T("WhatsApp +91 95886 51315",52.5,139,2.9,"#786450","normal","center");
+ cv.toBlob(function(b){if(!b){rej();return}var f;try{f=new File([b],imgName(o),{type:"image/png"})}catch(x){f=b}res({file:f,url:cv.toDataURL("image/png")})},"image/png")}catch(e){rej(e)}})}
+function mkPdf(o){var J=window.jspdf.jsPDF,d=new J({unit:"mm",format:[105,148]}),c=cust(o.cid)||{name:""},y=16,yy,L=(o.lines||[]).filter(function(l){return Number(l.qty)}),paid=o.pay==="Paid";
+ d.setDrawColor(122,74,31);d.setLineWidth(.8);d.roundedRect(3.5,3.5,98,141,3,3);
+ d.setTextColor(122,74,31);d.setFont("times","bold");d.setFontSize(20);d.text("Shrifal & Co.",52.5,y,{align:"center"});
+ d.setFont("helvetica","normal");d.setFontSize(6.5);d.setTextColor(120,100,80);d.text("GRADED  -  COUNTED  -  DELIVERED ON TIME  |  KOLHAPUR",52.5,y+5,{align:"center"});
+ d.setTextColor(58,36,16);d.setFont("helvetica","bold");d.setFontSize(11);d.text("ORDER RECEIPT",52.5,y+13,{align:"center"});
+ d.setDrawColor(76,139,47);d.setLineWidth(.5);d.line(38,y+16,67,y+16);
+ d.setFont("helvetica","normal");d.setFontSize(8.5);
+ yy=y+24;
+ [["Receipt no",rno(o)],["Order date",fd(o.date)],["Delivery date",o.ddate?fd(o.ddate):"To be confirmed"],["Customer",c.name||"-"]].forEach(function(r){var t=d.splitTextToSize(String(r[1]),53);d.setTextColor(120,100,80);d.text(r[0],10,yy);d.setTextColor(58,36,16);d.text(t,42,yy);yy+=5.6*t.length+.4});
+ yy+=2;d.setFillColor(122,74,31);d.rect(10,yy,85,7,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.text("Grade",12,yy+4.8);d.text("Qty",52,yy+4.8,{align:"right"});d.text("Rate",70,yy+4.8,{align:"right"});d.text("Amount",93,yy+4.8,{align:"right"});
+ yy+=7;d.setFont("helvetica","normal");d.setTextColor(58,36,16);
+ L.forEach(function(l){yy+=6.5;d.text(l.size,12,yy-1.8);d.text(String(l.qty),52,yy-1.8,{align:"right"});d.text(String(l.rate),70,yy-1.8,{align:"right"});d.text(fmt(l.qty*l.rate),93,yy-1.8,{align:"right"});d.setDrawColor(217,199,174);d.setLineWidth(.2);d.line(10,yy,95,yy)});
+ yy+=8;d.setFont("helvetica","bold");d.setFontSize(11);d.setTextColor(58,36,16);d.text("Total",12,yy);d.text("Rs "+fmt(tot(o)),93,yy,{align:"right"});
+ yy+=7;d.setFont("helvetica","normal");d.setFontSize(8.5);d.setTextColor(120,100,80);d.text("Payment",10,yy);
+ if(paid)d.setTextColor(76,139,47);else d.setTextColor(179,38,30);
+ d.setFont("helvetica","bold");d.text((paid?"PAID":"PAY LATER")+(paid&&o.mode?" ("+o.mode+")":""),42,yy);
+ if(o.note){d.setFont("helvetica","italic");d.setFontSize(7.5);d.setTextColor(120,100,80);d.text(d.splitTextToSize("Note: "+o.note,85).slice(0,2),10,yy+6)}
+ d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(120,100,80);d.text("Thank you for choosing Shrifal & Co.",52.5,134,{align:"center"});d.text("WhatsApp +91 95886 51315",52.5,139,{align:"center"});
+ return d.output("blob")}
+
+function say(t){document.getElementById("msg").textContent=t}
+function dl(blob,name){var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},1500)}
+if(!O){document.getElementById("sub").textContent="This receipt link is not complete. Please ask Shrifal & Co. to send it again."}
+else{
+ document.getElementById("sub").textContent="Receipt "+P.n;
+ mkImg(O).then(function(r){imgFile=r.file;var im=document.getElementById("im");im.src=r.url;im.hidden=false;document.getElementById("acts").hidden=false;
+  try{if(navigator.canShare&&navigator.canShare({files:[imgFile]}))document.getElementById("bShare").hidden=false}catch(x){}
+ }).catch(function(){document.getElementById("sub").textContent="Could not show the receipt on this phone. Please try another browser."});
+ document.getElementById("bImg").onclick=function(){if(imgFile){dl(imgFile,imgName(O));say("Image saved to your phone.")}};
+ document.getElementById("bPdf").onclick=function(){if(!window.jspdf){say("PDF is not ready. Check your internet and try again.");return}dl(mkPdf(O),"Receipt-"+P.n+".pdf");say("PDF saved to your phone.")};
+ document.getElementById("bShare").onclick=function(){navigator.share({files:[imgFile],title:"Receipt "+P.n,text:"Receipt "+P.n+" from Shrifal & Co."}).catch(function(){})};
+}
+</script></body></html>
