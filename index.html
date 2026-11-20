@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shrifal & Co. CRM</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#7A4A1F">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shrifal">
+<style>
+:root{--bg:#F5ECE0;--card:#FFFBF4;--ink:#3A2410;--muted:#7B6652;--brand:#7A4A1F;--green:#4C8B2F;--onbrand:#fff;--line:#E2D2BC;--warn:#B3261E;--soft:#EFE2D0;--gold:#C99A00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1C1510;--card:#2A2017;--ink:#F3E8D8;--muted:#BBA68E;--brand:#E2AB70;--green:#8CC46B;--onbrand:#1C1510;--line:#443523;--warn:#F2A099;--soft:#352A1D;--gold:#E8C14A}}
+:root[data-theme="dark"]{--bg:#1C1510;--card:#2A2017;--ink:#F3E8D8;--muted:#BBA68E;--brand:#E2AB70;--green:#8CC46B;--onbrand:#1C1510;--line:#443523;--warn:#F2A099;--soft:#352A1D;--gold:#E8C14A}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+h1{font:700 21px/1.2 Georgia,"Times New Roman",serif;margin:0;color:var(--brand)}
+.sub{color:var(--muted);font-size:13px}
+main{padding:14px 16px;max-width:640px;margin:0 auto}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+nav button{flex:1;border:0;background:none;color:var(--muted);padding:12px 2px;font:600 13px/1.2 inherit;min-height:52px}
+nav button[aria-current="page"]{color:var(--brand);box-shadow:inset 0 3px 0 var(--green)}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px;min-height:46px}
+textarea{min-height:80px}
+:focus-visible{outline:3px solid var(--green);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font:700 15px/1 inherit;min-height:46px;background:var(--brand);color:var(--onbrand);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.alt{background:var(--soft);color:var(--ink)}.btn.go{background:var(--green);color:var(--onbrand)}.btn.bad{background:var(--warn);color:var(--onbrand)}
+.btn.sm{min-height:38px;padding:8px 12px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}
+.card b{font-size:17px}
+.meta{color:var(--muted);font-size:13px;margin-top:2px}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--soft);font-size:12px;font-weight:700;margin-left:6px;vertical-align:middle}
+.pill.g{background:var(--green);color:var(--onbrand)}.pill.r{background:var(--warn);color:var(--onbrand)}.pill.y{background:var(--gold);color:#1C1510}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.big{font:700 32px/1.1 Georgia,serif;color:var(--brand)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat span{display:block;color:var(--muted);font-size:13px}.stat strong{font-size:22px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:center}th:first-child,td:first-child{text-align:left}
+.wrap{overflow-x:auto}
+.warn{background:var(--soft);border:1px solid var(--warn);border-radius:10px;padding:10px;margin-bottom:10px;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:22px 8px}
+.over{color:var(--warn);font-weight:700}
+h2{font:700 18px/1.3 Georgia,serif;margin:18px 0 6px}
+.ln{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:8px;align-items:center;margin-top:6px}
+.ln b{font-size:15px}
+.tot{font:700 20px/1.2 Georgia,serif;color:var(--brand);margin-top:10px}
+.sh-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;border:0;padding:0;border-radius:0}
+.sh{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);color:var(--ink);border-top:1px solid var(--line);border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-width:640px;margin:0 auto;max-height:90%;overflow:auto}
+.sh .btn{width:100%;margin-top:8px}
+.btn:disabled{opacity:.55}
+.rcimg{display:block;margin:10px auto 4px;max-height:210px;max-width:100%;border:1px solid var(--line);border-radius:8px}
+.sh .row .btn{margin-top:8px}
+</style>
+</head>
+<body>
+<header><h1>Shrifal & Co. CRM</h1><div class="sub" id="today"></div></header>
+<main id="app"></main>
+<nav id="nav"></nav>
+<div id="sheet"></div>
+<script>
+var KEY="shrifal_customers_v1",OKEY="shrifal_orders_v1",data=[],orders=[],view="today",editId=null,editOid=null,preC=null,filt={q:"",st:"",wd:""},okStore=true,arm=null,msg="",lastRc=null;
+var TYPES=["Hotel / Restaurant","Mess","Canteen","Small food court stall","Cloud kitchen","Caterer / other"];
+var WARDS=["A Ward","B Ward","C Ward","D Ward","E Ward","Unknown"];
+var STAT=["New","Visited","Sampled","Trial order","Regular","Not interested"];
+var SIZES=["Small","Medium","Large","Extra Large"],FLAGS=["","Green","Yellow","Red"];
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function fmt(n){return Number(n||0).toLocaleString("en-IN")}
+function fd(s){var p=String(s||"").split("-");return p.length===3?p[2]+"-"+p[1]+"-"+p[0]:(s||"")}
+function phone(p){var d=String(p||"").replace(/\D/g,"");if(d.length===10)d="91"+d;return d}
+function opt(l,s){return l.map(function(x){return'<option'+(x===s?" selected":"")+'>'+esc(x)+'</option>'}).join("")}
+function val(i){return document.getElementById(i).value.trim()}
+function cust(id){return data.filter(function(c){return c.id===id})[0]}
+function ord(id){return orders.filter(function(o){return o.id===id})[0]}
+function tot(o){return(o.lines||[]).reduce(function(s,l){return s+(Number(l.qty)||0)*(Number(l.rate)||0)},0)}
+function lt(o){return(o.lines||[]).filter(function(l){return Number(l.qty)}).map(function(l){return l.qty+" "+l.size}).join(", ")||"no items"}
+function load(){try{localStorage.setItem("t","1");localStorage.removeItem("t");data=JSON.parse(localStorage.getItem(KEY)||"[]");orders=JSON.parse(localStorage.getItem(OKEY)||"[]")}catch(e){okStore=false;data=[];orders=[]}
+ var ch=false;data.forEach(function(c){if(c.qty&&!c.mig){orders.push({id:"m"+c.id,cid:c.id,date:c.visit||today(),ddate:c.ddate||"",lines:[{size:c.size&&c.size!=="Not set"?c.size:"Medium",qty:Number(c.qty),rate:Number(c.orate)||0}],pay:c.pay==="Paid"?"Paid":"Pay later",mode:"",done:false,note:""});c.mig=1;ch=true}});if(ch)save()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(OKEY,JSON.stringify(orders))}catch(e){okStore=false}}
+function go(v,c){view=v;editId=null;editOid=null;preC=c||null;arm=null;msg="";render();window.scrollTo(0,0)}
+function rno(o){return"SC-"+String(o.date||today()).replace(/-/g,"")+"-"+String(o.id).slice(-3)}
+function rcText(o){var c=cust(o.cid)||{name:""},L=(o.lines||[]).filter(function(l){return Number(l.qty)}).map(function(l){return"- "+l.size+": "+l.qty+" x Rs "+l.rate+" = Rs "+fmt(l.qty*l.rate)});
+ return["*Shrifal & Co.* \ud83e\udd65","Receipt no: "+rno(o),"Order date: "+fd(o.date),"Delivery date: "+(o.ddate?fd(o.ddate):"To be confirmed"),"Customer: "+c.name,""].concat(L,["*Total: Rs "+fmt(tot(o))+"*","Payment: "+o.pay,"","Thank you! For your next order, just message us here.","Shrifal & Co., Kolhapur"]).join("\n")}
+function rcLink(o){var c=cust(o.cid);return c&&phone(c.phone)?"https://wa.me/"+phone(c.phone)+"?text="+encodeURIComponent(rcText(o)):""}
+function rcBtn(o,cls){var l=rcLink(o);return(l?'<a class="btn sm go" target="_blank" rel="noopener" href="'+l+'">Send receipt</a>':"")+'<button class="btn sm '+cls+'" data-a="rc" data-id="'+o.id+'">Image / PDF</button>'}
+function cText(o,mr){var c=cust(o.cid)||{name:""},nm=c.person||c.name,L=(o.lines||[]).filter(function(l){return Number(l.qty)}).map(function(l){return"- "+l.size+": "+l.qty+" x Rs "+l.rate+" = Rs "+fmt(l.qty*l.rate)}),t="*Rs "+fmt(tot(o))+"*";
+ if(mr)return["*Order confirm zali* \u2705","Namaskar "+nm+", Shrifal & Co. kade order dilyabaddal dhanyavad \ud83e\udd65","","Order no: "+rno(o),"Order tarikh: "+fd(o.date),"Delivery tarikh: "+(o.ddate?fd(o.ddate):"lavkarach kalavu"),"","Items:"].concat(L,["Ekun: "+t,"Payment: "+o.pay,"","Delivery chya veli maal ghenyasathi konitari upalabdh asu dya. Order madhe kahi badal asel tar lagech ya number var message kara.","Dhanyavad \ud83d\ude4f","Shrifal & Co., Kolhapur"]).join("\n");
+ return["*Order Confirmed* \u2705","Hello "+nm+", thank you for your order with *Shrifal & Co.* \ud83e\udd65","","Order no: "+rno(o),"Order date: "+fd(o.date),"Delivery date: "+(o.ddate?fd(o.ddate):"To be confirmed"),"","Items:"].concat(L,["Total: "+t,"Payment: "+o.pay,"","Please keep someone available to receive the coconuts on the delivery date. For any change to this order, message us here as early as possible.","Thank you for choosing Shrifal & Co. \ud83d\ude4f","Kolhapur"]).join("\n")}
+function cLink(o,mr){var c=cust(o.cid);return c&&phone(c.phone)?"https://wa.me/"+phone(c.phone)+"?text="+encodeURIComponent(cText(o,mr)):""}
+function cBtn(o,mr,cls){var l=cLink(o,mr);return l?'<a class="btn sm '+cls+'" target="_blank" rel="noopener" href="'+l+'">'+(mr?"Confirm (MR)":"Confirm (EN)")+'</a>':""}
+function dlSave(o){return new Promise(function(res){var u=URL.createObjectURL(o.data),a=document.createElement("a");a.href=u;a.download=o.filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove();res()},1500)})}
+function loadPdf(){return new Promise(function(res,rej){if(window.jspdf)return res();var s=document.createElement("script");s.src="jspdf.umd.min.js";s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+function mkPdf(o){var J=window.jspdf.jsPDF,d=new J({unit:"mm",format:[105,148]}),c=cust(o.cid)||{name:""},y=16,yy,L=(o.lines||[]).filter(function(l){return Number(l.qty)}),paid=o.pay==="Paid";
+ d.setDrawColor(122,74,31);d.setLineWidth(.8);d.roundedRect(3.5,3.5,98,141,3,3);
+ d.setTextColor(122,74,31);d.setFont("times","bold");d.setFontSize(20);d.text("Shrifal & Co.",52.5,y,{align:"center"});
+ d.setFont("helvetica","normal");d.setFontSize(6.5);d.setTextColor(120,100,80);d.text("GRADED  -  COUNTED  -  DELIVERED ON TIME  |  KOLHAPUR",52.5,y+5,{align:"center"});
+ d.setTextColor(58,36,16);d.setFont("helvetica","bold");d.setFontSize(11);d.text("ORDER RECEIPT",52.5,y+13,{align:"center"});
+ d.setDrawColor(76,139,47);d.setLineWidth(.5);d.line(38,y+16,67,y+16);
+ d.setFont("helvetica","normal");d.setFontSize(8.5);
+ yy=y+24;
+ [["Receipt no",rno(o)],["Order date",fd(o.date)],["Delivery date",o.ddate?fd(o.ddate):"To be confirmed"],["Customer",c.name||"-"]].forEach(function(r){var t=d.splitTextToSize(String(r[1]),53);d.setTextColor(120,100,80);d.text(r[0],10,yy);d.setTextColor(58,36,16);d.text(t,42,yy);yy+=5.6*t.length+.4});
+ yy+=2;d.setFillColor(122,74,31);d.rect(10,yy,85,7,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.text("Grade",12,yy+4.8);d.text("Qty",52,yy+4.8,{align:"right"});d.text("Rate",70,yy+4.8,{align:"right"});d.text("Amount",93,yy+4.8,{align:"right"});
+ yy+=7;d.setFont("helvetica","normal");d.setTextColor(58,36,16);
+ L.forEach(function(l){yy+=6.5;d.text(l.size,12,yy-1.8);d.text(String(l.qty),52,yy-1.8,{align:"right"});d.text(String(l.rate),70,yy-1.8,{align:"right"});d.text(fmt(l.qty*l.rate),93,yy-1.8,{align:"right"});d.setDrawColor(217,199,174);d.setLineWidth(.2);d.line(10,yy,95,yy)});
+ yy+=8;d.setFont("helvetica","bold");d.setFontSize(11);d.setTextColor(58,36,16);d.text("Total",12,yy);d.text("Rs "+fmt(tot(o)),93,yy,{align:"right"});
+ yy+=7;d.setFont("helvetica","normal");d.setFontSize(8.5);d.setTextColor(120,100,80);d.text("Payment",10,yy);
+ if(paid)d.setTextColor(76,139,47);else d.setTextColor(179,38,30);
+ d.setFont("helvetica","bold");d.text((paid?"PAID":"PAY LATER")+(paid&&o.mode?" ("+o.mode+")":""),42,yy);
+ if(o.note){d.setFont("helvetica","italic");d.setFontSize(7.5);d.setTextColor(120,100,80);d.text(d.splitTextToSize("Note: "+o.note,85).slice(0,2),10,yy+6)}
+ d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(120,100,80);d.text("Thank you for choosing Shrifal & Co.",52.5,134,{align:"center"});d.text("WhatsApp +91 95886 51315",52.5,139,{align:"center"});
+ return d.output("blob")}
+var sheetId=null,pdfFile=null,imgFile=null,imgUrl="",pdfFail=false,sNote="";
+function rcName(o){return"Receipt-"+rno(o)+".pdf"}
+function imgName(o){return"Receipt-"+rno(o)+".png"}
+function sheetMsg(t){sNote=t;var m=document.getElementById("rcmsg");if(m)m.textContent=t}
+function rrect(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function mkImg(o){return new Promise(function(res,rej){try{
+ var K=8,cv=document.createElement("canvas");cv.width=105*K;cv.height=148*K;var g=cv.getContext("2d"),c=cust(o.cid)||{name:""},L=(o.lines||[]).filter(function(l){return Number(l.qty)}),paid=o.pay==="Paid",SANS="Helvetica,Arial,sans-serif",SERIF="Georgia,'Times New Roman',serif",yy;
+ function F(size,w,fam,st){g.font=(st||"normal")+" "+(w||"normal")+" "+size*K+"px "+(fam||SANS)}
+ function T(t,x,y,size,col,w,al,fam,st){F(size,w,fam,st);g.fillStyle=col;g.textAlign=al||"left";g.fillText(t,x*K,y*K)}
+ function wr(t,w){var ws=String(t).split(" "),ln=[],cur="";ws.forEach(function(x){var tt=cur?cur+" "+x:x;if(g.measureText(tt).width>w*K&&cur){ln.push(cur);cur=x}else cur=tt});if(cur)ln.push(cur);return ln}
+ g.fillStyle="#FFFBF4";g.fillRect(0,0,cv.width,cv.height);
+ g.strokeStyle="#7A4A1F";g.lineWidth=.8*K;rrect(g,3.5*K,3.5*K,98*K,141*K,3*K);g.stroke();
+ T("Shrifal & Co.",52.5,16,7.2,"#7A4A1F","bold","center",SERIF);
+ T("GRADED  ·  COUNTED  ·  DELIVERED ON TIME  |  KOLHAPUR",52.5,21,2.3,"#786450","normal","center");
+ T("ORDER RECEIPT",52.5,29,3.9,"#3A2410","bold","center");
+ g.strokeStyle="#4C8B2F";g.lineWidth=.5*K;g.beginPath();g.moveTo(38*K,32*K);g.lineTo(67*K,32*K);g.stroke();
+ yy=40;
+ [["Receipt no",rno(o)],["Order date",fd(o.date)],["Delivery date",o.ddate?fd(o.ddate):"To be confirmed"],["Customer",c.name||"-"]].forEach(function(r){F(3.1);var ln=wr(r[1],53);T(r[0],10,yy,3.1,"#786450");ln.forEach(function(t,i){T(t,42,yy+i*5,3.1,"#3A2410")});yy+=5.8*ln.length+.4});
+ yy+=2;g.fillStyle="#7A4A1F";g.fillRect(10*K,yy*K,85*K,7*K);
+ T("Grade",12,yy+4.8,3.1,"#fff","bold");T("Qty",52,yy+4.8,3.1,"#fff","bold","right");T("Rate",70,yy+4.8,3.1,"#fff","bold","right");T("Amount",93,yy+4.8,3.1,"#fff","bold","right");
+ yy+=7;
+ L.forEach(function(l){yy+=6.5;T(l.size,12,yy-1.8,3.1,"#3A2410");T(String(l.qty),52,yy-1.8,3.1,"#3A2410","normal","right");T(String(l.rate),70,yy-1.8,3.1,"#3A2410","normal","right");T(fmt(l.qty*l.rate),93,yy-1.8,3.1,"#3A2410","normal","right");g.strokeStyle="#D9C7AE";g.lineWidth=.2*K;g.beginPath();g.moveTo(10*K,yy*K);g.lineTo(95*K,yy*K);g.stroke()});
+ yy+=8;T("Total",12,yy,4,"#3A2410","bold");T("Rs "+fmt(tot(o)),93,yy,4,"#3A2410","bold","right");
+ yy+=7;T("Payment",10,yy,3.1,"#786450");T((paid?"PAID":"PAY LATER")+(paid&&o.mode?" ("+o.mode+")":""),42,yy,3.1,paid?"#4C8B2F":"#B3261E","bold");
+ if(o.note){F(2.7,"normal",SANS,"italic");wr("Note: "+o.note,85).slice(0,2).forEach(function(t,i){T(t,10,yy+6+i*3.4,2.7,"#786450","normal","left",SANS,"italic")})}
+ T("Thank you for choosing Shrifal & Co.",52.5,134,2.9,"#786450","normal","center");T("WhatsApp +91 95886 51315",52.5,139,2.9,"#786450","normal","center");
+ cv.toBlob(function(b){if(!b){rej();return}var f;try{f=new File([b],imgName(o),{type:"image/png"})}catch(x){f=b}res({file:f,url:cv.toDataURL("image/png")})},"image/png")}catch(e){rej(e)}})}
+function openSheet(id){var o=ord(id);if(!o)return;sheetId=id;pdfFile=null;imgFile=null;imgUrl="";pdfFail=false;sNote="";drawSheet();
+ mkImg(o).then(function(r){if(sheetId!==id)return;imgFile=r.file;imgUrl=r.url;drawSheet()}).catch(function(){});
+ loadPdf().then(function(){if(sheetId!==id)return;var b=mkPdf(o);try{pdfFile=new File([b],rcName(o),{type:"application/pdf"})}catch(x){pdfFile=b}drawSheet()}).catch(function(){if(sheetId===id){pdfFail=true;drawSheet()}})}
+function drawSheet(){var s=document.getElementById("sheet");if(!sheetId){s.innerHTML="";return}
+ var o=ord(sheetId);if(!o){sheetId=null;s.innerHTML="";return}
+ var c=cust(o.cid)||{name:"(deleted customer)"},p=phone(c.phone),rp=!!pdfFile,ri=!!imgFile,tl=rcLink(o),
+ chat=p?"https://wa.me/"+p+"?text="+encodeURIComponent("Hello, your receipt "+rno(o)+" from Shrifal & Co. is attached."):"";
+ s.innerHTML='<button class="sh-bg" data-a="rcx" aria-label="Close"></button><div class="sh" role="dialog" aria-modal="true" aria-label="Receipt">'+
+ '<b>'+esc(c.name)+'</b><div class="meta">'+rno(o)+' · Rs '+fmt(tot(o))+' · '+esc(o.pay)+'</div>'+
+ (imgUrl?'<img class="rcimg" src="'+imgUrl+'" alt="Receipt preview">':"")+
+ '<button class="btn go" data-a="rcshareimg"'+(ri?"":" disabled")+'>'+(ri?"Share image receipt":"Preparing image…")+'</button>'+
+ '<div class="row"><button class="btn alt" data-a="rcsaveimg"'+(ri?"":" disabled")+'>Save image</button><button class="btn alt" data-a="rccopy"'+(ri?"":" disabled")+'>Copy image</button></div>'+
+ '<div class="meta" style="margin-top:6px">If sharing opens nothing, tap Copy image, open the customer’s chat and paste. Or Save image and attach it from Gallery.</div>'+
+ '<div class="row"><button class="btn alt" data-a="rcshare"'+(rp?"":" disabled")+'>'+(rp?"Share PDF":(pdfFail?"PDF failed":"Preparing PDF…"))+'</button><button class="btn alt" data-a="rcsave"'+(rp?"":" disabled")+'>Save PDF</button></div>'+
+ (chat?'<a class="btn alt" target="_blank" rel="noopener" href="'+chat+'">Open customer’s WhatsApp chat</a>':"")+
+ (tl?'<a class="btn alt" target="_blank" rel="noopener" href="'+tl+'">Send as WhatsApp text instead</a>':"")+
+ '<div class="meta" id="rcmsg" role="status" style="margin-top:8px">'+esc(sNote)+'</div>'+
+ '<button class="btn alt" data-a="rcx" style="margin-top:8px">Close</button></div>'}
+function saveFile(f,name,kind){if(!f)return;
+ var p=Promise.resolve({save:dlSave});
+ p.then(function(dl){if(!dl){sheetMsg("Saving files is not available here. Use Send as WhatsApp text instead.");return}
+  return dl.save({filename:name,data:f}).then(function(){sheetMsg((kind==="image"?"Image":"PDF")+" saved. Now open the customer’s WhatsApp chat, tap the clip icon and pick it"+(kind==="image"?" from Gallery.":" from Documents."))})}).catch(function(e){if(e&&e.code==="declined")return;sheetMsg("Could not save the file. Please try again.")})}
+function shareFile(f,name,kind){var o=ord(sheetId);if(!o||!f)return;
+ var can=false;try{can=!!(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]}))}catch(x){}
+ if(!can){sheetMsg("Direct sharing is blocked in this app, so the file is being saved instead.");saveFile(f,name,kind);return}
+ navigator.share({files:[f],title:"Receipt "+rno(o),text:"Receipt "+rno(o)+" from Shrifal & Co. Total Rs "+fmt(tot(o))}).then(function(){sheetMsg("Shared.")}).catch(function(e){if(e&&e.name==="AbortError")return;sheetMsg("Sharing was blocked here, so the file is being saved instead.");saveFile(f,name,kind)})}
+function bkClean(s){return String(s==null?"":s).replace(/[^\x20-\xFF]/g,"?")}
+function bkPdf(){var J=window.jspdf.jsPDF,d=new J({unit:"mm",format:"a4",orientation:"landscape"}),y=15,now=new Date(),sum=orders.reduce(function(s,o){return s+tot(o)},0);
+ function table(cols,rows){
+  function hdr(){d.setFillColor(122,74,31);d.rect(10,y,277,7,"F");d.setFont("helvetica","bold");d.setFontSize(8);d.setTextColor(255,255,255);var x=10;cols.forEach(function(c){d.text(c.h,x+1.5,y+4.8);x+=c.w});y+=7;d.setFont("helvetica","normal");d.setFontSize(7.5)}
+  hdr();
+  rows.forEach(function(r,i){var cells=cols.map(function(c){return d.splitTextToSize(bkClean(c.f(r))||"-",c.w-3).slice(0,4)}),n=Math.max.apply(null,cells.map(function(a){return a.length})),h=n*3.3+2.4;
+   if(y+h>196){d.addPage();y=15;hdr()}
+   if(i%2){d.setFillColor(250,244,235);d.rect(10,y,277,h,"F")}
+   d.setTextColor(58,36,16);var x=10;cells.forEach(function(a,j){d.text(a,x+1.5,y+4.1);x+=cols[j].w});y+=h});
+  if(!rows.length){d.setTextColor(120,100,80);d.text("No records.",11.5,y+4);y+=7}
+  y+=8}
+ d.setFont("times","bold");d.setFontSize(20);d.setTextColor(122,74,31);d.text("Shrifal & Co. - Data Backup",10,y);y+=7;
+ d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(120,100,80);
+ d.text("Created "+fd(today())+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")+"   |   "+data.length+" customers   |   "+orders.length+" orders   |   Total order value Rs "+fmt(sum),10,y);y+=4.5;
+ d.text("This PDF is a readable record. To restore data in an app, use the text from Copy backup.",10,y);y+=9;
+ d.setFont("helvetica","bold");d.setFontSize(12);d.setTextColor(76,139,47);d.text("Customers ("+data.length+")",10,y);y+=4;
+ table([{h:"Name",w:52,f:function(c){return c.name}},{h:"Type",w:34,f:function(c){return c.type}},{h:"Ward / Area",w:42,f:function(c){return[c.ward,c.area].filter(Boolean).join(" / ")}},{h:"Contact person",w:32,f:function(c){return c.person}},{h:"Phone",w:28,f:function(c){return c.phone}},{h:"Status",w:24,f:function(c){return c.status}},{h:"Notes",w:65,f:function(c){return c.notes}}],data);
+ if(y>170){d.addPage();y=15}
+ d.setFont("helvetica","bold");d.setFontSize(12);d.setTextColor(76,139,47);d.text("Orders ("+orders.length+")",10,y);y+=4;
+ function q(o,s){var l=(o.lines||[]).filter(function(x){return x.size===s})[0];return l&&Number(l.qty)?String(l.qty):"-"}
+ var os=orders.slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
+ table([{h:"Receipt no",w:38,f:function(o){return rno(o)}},{h:"Date",w:24,f:function(o){return fd(o.date)}},{h:"Customer",w:60,f:function(o){var c=cust(o.cid);return c?c.name:"(deleted)"}},{h:"Small",w:14,f:function(o){return q(o,"Small")}},{h:"Med",w:14,f:function(o){return q(o,"Medium")}},{h:"Large",w:14,f:function(o){return q(o,"Large")}},{h:"XL",w:14,f:function(o){return q(o,"Extra Large")}},{h:"Total Rs",w:24,f:function(o){return fmt(tot(o))}},{h:"Payment",w:30,f:function(o){return(o.pay||"")+(o.pay==="Paid"&&o.mode?" ("+o.mode+")":"")}},{h:"Delivered",w:20,f:function(o){return o.done?"Yes":"No"}},{h:"Note",w:25,f:function(o){return o.note}}],os);
+ var n=d.getNumberOfPages(),i;for(i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(7.5);d.setTextColor(150,130,110);d.text("Page "+i+" of "+n,287,204,{align:"right"});d.text("Shrifal & Co. backup",10,204)}
+ return d.output("blob")}
+function doBkPdf(){var m=document.getElementById("bkmsg");if(m)m.textContent="Preparing the backup PDF…";
+ loadPdf().then(function(){var b=bkPdf(),name="Shrifal-Backup-"+today()+".pdf",p=Promise.resolve({save:dlSave});
+  return p.then(function(dl){if(!dl){if(m)m.textContent="Saving files is not available here.";return}
+   return dl.save({filename:name,data:b}).then(function(){if(m)m.textContent="Backup PDF saved: "+name})})}).catch(function(e){if(e&&e.code==="declined"){if(m)m.textContent="";return}if(m)m.textContent="Could not make the PDF. Check your internet and try again."})}
+function copyImg(){if(!imgFile)return;
+ try{navigator.clipboard.write([new ClipboardItem({"image/png":imgFile})]).then(function(){sheetMsg("Image copied. Open the customer’s chat, press and hold the message box and tap Paste.")},function(){sheetMsg("Copy is blocked here. Use Save image instead.")})}catch(x){sheetMsg("Copy is not supported here. Use Save image instead.")}}
+function render(){
+ document.getElementById("today").textContent="Today: "+fd(today())+" · "+data.length+" customers · "+orders.length+" orders";
+ var tabs=[["today","Today"],["cust","Customers"],["ord","Orders"],["dash","Dashboard"]];
+ document.getElementById("nav").innerHTML=tabs.map(function(t){return'<button data-v="'+t[0]+'"'+(view===t[0]||(view==="cf"&&t[0]==="cust")||(view==="of"&&t[0]==="ord")?' aria-current="page"':"")+'>'+t[1]+'</button>'}).join("");
+ var h=okStore?"":'<div class="warn">This browser is blocking saved data. Anything you enter will be lost when you close the page. Use Backup often.</div>';
+ h+={today:vToday,cust:vCust,ord:vOrd,dash:vDash,cf:vCf,of:vOf}[view]();
+ document.getElementById("app").innerHTML=h
+}
+function pill(t,c){return'<span class="pill '+(c||"")+'">'+esc(t)+'</span>'}
+function ccard(c,fu){var p=phone(c.phone),od=c.fu&&c.fu<today(),last=orders.filter(function(o){return o.cid===c.id}).sort(function(a,b){return a.date<b.date?1:-1})[0],n=orders.filter(function(o){return o.cid===c.id}).length;
+ return'<div class="card"><b>'+esc(c.name)+'</b>'+pill(c.status,c.status==="Regular"||c.status==="Trial order"?"g":"")+(c.flag?pill(c.flag,c.flag==="Green"?"g":c.flag==="Red"?"r":"y"):"")+
+ '<div class="meta">'+esc(c.type)+' · '+esc(c.ward)+(c.area?' · '+esc(c.area):"")+'</div>'+
+ (c.use?'<div class="meta">Uses '+esc(c.use)+' a day'+(c.rate?' at Rs '+esc(c.rate):"")+'</div>':"")+
+ (n?'<div class="meta">'+n+' orders · last '+fd(last.date)+' · '+esc(lt(last))+'</div>':'<div class="meta">No orders yet</div>')+
+ (c.fu?'<div class="meta'+(od&&fu?' over':"")+'">Follow up: '+fd(c.fu)+(od?' (overdue)':"")+'</div>':"")+(c.notes?'<div class="meta">'+esc(c.notes)+'</div>':"")+
+ '<div class="acts">'+(p?'<a class="btn sm go" href="tel:+'+p+'">Call</a><a class="btn sm alt" target="_blank" rel="noopener" href="https://wa.me/'+p+'">WhatsApp</a>':"")+
+ '<button class="btn sm" data-a="no" data-id="'+esc(c.id)+'">+ Order</button><button class="btn sm alt" data-a="ec" data-id="'+esc(c.id)+'">Edit</button></div></div>'}
+function ocard(o){var c=cust(o.cid)||{name:"(deleted customer)"},t=tot(o);
+ return'<div class="card"><b>'+esc(c.name)+'</b>'+pill(o.done?"Delivered":"To deliver",o.done?"g":"y")+pill(o.pay,o.pay==="Paid"?"g":"r")+
+ '<div class="meta">Order '+fd(o.date)+' · Delivery '+(o.ddate?fd(o.ddate):"not set")+' · '+rno(o)+'</div><div class="meta">'+esc(lt(o))+' · <b>Rs '+fmt(t)+'</b></div>'+(o.note?'<div class="meta">'+esc(o.note)+'</div>':"")+
+ '<div class="acts">'+cBtn(o,0,"go")+cBtn(o,1,"alt")+rcBtn(o,"alt")+(o.done?"":'<button class="btn sm go" data-a="dlv" data-id="'+o.id+'">Mark delivered</button>')+(o.pay==="Paid"?"":'<button class="btn sm go" data-a="paid" data-id="'+o.id+'">Mark paid</button>')+'<button class="btn sm alt" data-a="eo" data-id="'+o.id+'">Edit</button></div></div>'}
+function vToday(){var t=today(),pend=orders.filter(function(o){return!o.done}).sort(function(a,b){return(a.ddate||"9")<(b.ddate||"9")?-1:1}),
+ fus=data.filter(function(c){return c.fu&&c.fu<=t&&c.status!=="Not interested"}).sort(function(a,b){return a.fu<b.fu?-1:1}),
+ un=orders.filter(function(o){return o.pay!=="Paid"});
+ return'<h2>Deliveries to make ('+pend.length+')</h2>'+(pend.length?pend.map(ocard).join(""):'<div class="empty">No pending deliveries.</div>')+
+ '<h2>Follow-ups due ('+fus.length+')</h2>'+(fus.length?fus.map(function(c){return ccard(c,true)}).join(""):'<div class="empty">Nothing due. Set a follow-up date when you save a customer.</div>')+
+ '<h2>Payments pending ('+un.length+' · Rs '+fmt(un.reduce(function(s,o){return s+tot(o)},0))+')</h2>'+(un.length?un.map(ocard).join(""):'<div class="empty">Nothing pending.</div>')}
+function vCust(){var q=filt.q.toLowerCase(),r=data.filter(function(c){return(!q||(c.name+" "+c.area+" "+c.person).toLowerCase().indexOf(q)>-1)&&(!filt.st||c.status===filt.st)&&(!filt.wd||c.ward===filt.wd)});
+ return'<h2>Customers ('+r.length+')</h2><button class="btn go" data-a="nc" style="width:100%">+ Add customer</button><input id="q" style="margin-top:10px" placeholder="Search name or area" value="'+esc(filt.q)+'" aria-label="Search">'+
+ '<div class="row" style="margin-top:8px"><select id="fs" aria-label="Status filter"><option value="">All statuses</option>'+opt(STAT,filt.st)+'</select><select id="fw" aria-label="Ward filter"><option value="">All wards</option>'+opt(WARDS,filt.wd)+'</select></div>'+
+ (r.length?r.map(function(c){return ccard(c)}).join(""):'<div class="empty">No customers yet.</div>')}
+function vCf(){var c=editId?cust(editId):{};c=c||{};
+ return'<h2>'+(c.id?"Edit customer":"New customer")+'</h2>'+(msg?'<div class="card">'+esc(msg)+'</div>':"")+
+ '<label for="f_name">Customer name</label><input id="f_name" value="'+esc(c.name)+'" autocomplete="off">'+
+ '<div class="row"><div><label for="f_type">Type</label><select id="f_type">'+opt(TYPES,c.type)+'</select></div><div><label for="f_ward">Ward</label><select id="f_ward">'+opt(WARDS,c.ward||"Unknown")+'</select></div></div>'+
+ '<label for="f_area">Area / locality</label><input id="f_area" value="'+esc(c.area)+'">'+
+ '<div class="row"><div><label for="f_person">Contact person</label><input id="f_person" value="'+esc(c.person)+'"></div><div><label for="f_phone">Phone / WhatsApp</label><input id="f_phone" type="tel" inputmode="tel" value="'+esc(c.phone)+'"></div></div>'+
+ '<div class="row"><div><label for="f_use">Coconuts used per day</label><input id="f_use" type="number" inputmode="numeric" min="0" value="'+esc(c.use)+'"></div><div><label for="f_rate">Price they pay now (Rs)</label><input id="f_rate" type="number" inputmode="decimal" min="0" value="'+esc(c.rate)+'"></div></div>'+
+ '<div class="row"><div><label for="f_status">Status</label><select id="f_status">'+opt(STAT,c.status||"Visited")+'</select></div><div><label for="f_flag">Lead flag</label><select id="f_flag">'+FLAGS.map(function(x){return'<option value="'+x+'"'+(x===(c.flag||"")?" selected":"")+'>'+(x||"Not set")+'</option>'}).join("")+'</select></div></div>'+
+ '<div class="row"><div><label for="f_visit">Visit date</label><input id="f_visit" type="date" value="'+esc(c.visit||today())+'"></div><div><label for="f_fu">Follow-up date</label><input id="f_fu" type="date" value="'+esc(c.fu)+'"></div></div>'+
+ '<label for="f_sample">Sample given?</label><select id="f_sample">'+opt(["No","Yes"],c.sample||"No")+'</select>'+
+ '<label for="f_notes">Notes</label><textarea id="f_notes">'+esc(c.notes)+'</textarea>'+
+ '<div class="acts" style="margin-top:16px"><button class="btn go" data-a="sc">Save customer</button><button class="btn alt" data-a="back">Cancel</button>'+(c.id?'<button class="btn bad" data-a="dc">'+(arm===c.id?"Tap again to delete":"Delete")+'</button>':"")+'</div>'}
+function vOrd(){var r=orders.slice().sort(function(a,b){return(a.date<b.date)?1:-1});
+ return'<h2>Orders ('+r.length+')</h2><button class="btn go" data-a="no" style="width:100%">+ New order</button>'+(r.length?r.map(ocard).join(""):'<div class="empty">No orders yet. Tap New order after you take one.</div>')}
+function vOf(){var o=editOid?ord(editOid):null,c0=o?o.cid:preC;
+ var lines=o?o.lines:[];function ln(s){return lines.filter(function(l){return l.size===s})[0]||{}}
+ return'<h2>'+(o?"Edit order":"New order")+'</h2>'+
+ '<label for="o_c">Customer</label><select id="o_c"><option value="">Choose customer</option>'+data.map(function(c){return'<option value="'+esc(c.id)+'"'+(c.id===c0?" selected":"")+'>'+esc(c.name)+'</option>'}).join("")+'</select>'+
+ '<div class="row"><div><label for="o_d">Order date</label><input id="o_d" type="date" value="'+esc(o?o.date:today())+'"></div><div><label for="o_dd">Delivery date</label><input id="o_dd" type="date" value="'+esc(o?o.ddate:"")+'"></div></div>'+
+ '<label>Items (quantity and rate for each grade)</label>'+SIZES.map(function(s,i){var l=ln(s);return'<div class="ln"><b>'+s+'</b><input id="q'+i+'" type="number" inputmode="numeric" min="0" placeholder="Qty" value="'+esc(l.qty)+'"><input id="r'+i+'" type="number" inputmode="decimal" min="0" step="0.5" placeholder="Rs/pc" value="'+esc(l.rate)+'"></div>'}).join("")+
+ '<div class="tot" id="ototal">Total: Rs '+fmt(o?tot(o):0)+'</div>'+
+ '<div class="row"><div><label for="o_p">Payment</label><select id="o_p">'+opt(["Pay later","Paid"],o?o.pay:"Pay later")+'</select></div><div><label for="o_m">Mode (cash / UPI)</label><input id="o_m" value="'+esc(o?o.mode:"")+'"></div></div>'+
+ '<label for="o_n">Note</label><input id="o_n" value="'+esc(o?o.note:"")+'">'+
+ '<div class="acts" style="margin-top:16px"><button class="btn go" data-a="so">Save order</button><button class="btn alt" data-a="back">Cancel</button>'+(o?'<button class="btn bad" data-a="do">'+(arm===o.id?"Tap again to delete":"Delete")+'</button>':"")+'</div>'}
+function vDash(){var t=today(),mo=t.slice(0,7),sales=0,msales=0,out=0,by={},cs={};
+ SIZES.forEach(function(s){by[s]=0});
+ orders.forEach(function(o){var x=tot(o);sales+=x;if(String(o.date).slice(0,7)===mo)msales+=x;if(o.pay!=="Paid")out+=x;cs[o.cid]=(cs[o.cid]||0)+x;(o.lines||[]).forEach(function(l){if(by[l.size]!=null)by[l.size]+=Number(l.qty)||0})});
+ var top=Object.keys(cs).sort(function(a,b){return cs[b]-cs[a]}).slice(0,5).map(function(id){var c=cust(id);return'<tr><td>'+esc(c?c.name:"(deleted)")+'</td><td>Rs '+fmt(cs[id])+'</td></tr>'}).join("");
+ var w={};WARDS.forEach(function(x){w[x]={n:0,v:0,a:0}});data.forEach(function(c){var k=w[c.ward]||w.Unknown;k.n++;if(c.visit)k.v++;if(c.status==="Trial order"||c.status==="Regular")k.a++});
+ var wr=WARDS.filter(function(x){return w[x].n}).map(function(x){return'<tr><td>'+x+'</td><td>'+w[x].n+'</td><td>'+w[x].v+'</td><td>'+w[x].a+'</td></tr>'}).join("");
+ var sc=STAT.map(function(s){return'<tr><td>'+s+'</td><td>'+data.filter(function(c){return c.status===s}).length+'</td></tr>'}).join("");
+ var sz=SIZES.map(function(s){return'<tr><td>'+s+'</td><td>'+by[s]+' pcs</td></tr>'}).join("");
+ return'<h2>Dashboard</h2><div class="card"><div class="big">Rs '+fmt(sales)+'</div><div class="meta">total sales · this month Rs '+fmt(msales)+'</div></div>'+
+ '<div class="stats"><div class="stat"><span>Payments pending</span><strong>Rs '+fmt(out)+'</strong></div><div class="stat"><span>Orders</span><strong>'+orders.length+'</strong></div>'+
+ '<div class="stat"><span>Customers visited</span><strong>'+data.filter(function(c){return c.visit}).length+'</strong></div><div class="stat"><span>Trial + regular</span><strong>'+data.filter(function(c){return c.status==="Trial order"||c.status==="Regular"}).length+'</strong></div></div>'+
+ '<h2>Pieces sold by size</h2><div class="wrap"><table>'+sz+'</table></div><h2>Top customers</h2><div class="wrap"><table>'+(top||'<tr><td class="empty">No orders yet</td></tr>')+'</table></div>'+
+ '<h2>By ward</h2><div class="wrap"><table><tr><th>Ward</th><th>Found</th><th>Visited</th><th>Active</th></tr>'+(wr||'<tr><td colspan="4" class="empty">No data yet</td></tr>')+'</table></div><h2>By status</h2><div class="wrap"><table>'+sc+'</table></div>'+
+ '<h2>Backup</h2><div class="meta">Data is saved only in this browser. Copy a backup every few days and send it to yourself on WhatsApp.</div><div class="acts"><button class="btn" data-a="copy">Copy backup</button><button class="btn alt" data-a="bkpdf">Save backup PDF</button></div>'+
+ '<label for="bk">Paste a backup here to restore it</label><textarea id="bk" placeholder="Paste backup text"></textarea><div class="acts"><button class="btn alt" data-a="restore">Restore backup</button></div><div id="bkmsg" class="meta"></div>'}
+function saveC(){var n=val("f_name");if(!n){msg="Enter the customer name first.";render();return}
+ var o={name:n,type:val("f_type"),ward:val("f_ward"),area:val("f_area"),person:val("f_person"),phone:val("f_phone"),use:val("f_use"),rate:val("f_rate"),status:val("f_status"),flag:val("f_flag"),sample:val("f_sample"),visit:val("f_visit"),fu:val("f_fu"),notes:val("f_notes")};
+ if(editId){data=data.map(function(x){return x.id===editId?Object.assign({},x,o):x})}else{o.id=String(Date.now());data.unshift(o)}
+ save();go("cust")}
+function totalNow(){var s=0;SIZES.forEach(function(_,i){s+=(Number(document.getElementById("q"+i).value)||0)*(Number(document.getElementById("r"+i).value)||0)});document.getElementById("ototal").textContent="Total: Rs "+fmt(s)}
+function saveO(){var cid=val("o_c");if(!cid){alert("Choose a customer first.");return}
+ var lines=[];SIZES.forEach(function(s,i){var q=Number(val("q"+i))||0;if(q)lines.push({size:s,qty:q,rate:Number(val("r"+i))||0})});
+ if(!lines.length){alert("Enter a quantity for at least one grade.");return}
+ var o={cid:cid,date:val("o_d")||today(),ddate:val("o_dd"),lines:lines,pay:val("o_p"),mode:val("o_m"),note:val("o_n")},id;
+ if(editOid){id=editOid;orders=orders.map(function(x){return x.id===id?Object.assign({},x,o):x})}else{id=String(Date.now());o.id=id;o.done=false;orders.unshift(o)}
+ save();go("ord");lastRc=id;var ob=ord(id),c=cust(cid);document.getElementById("app").insertAdjacentHTML("afterbegin",'<div class="card">Order saved. <div class="acts">'+(c&&phone(c.phone)?cBtn(ob,0,"go")+cBtn(ob,1,"alt")+rcBtn(ob,"alt"):"Add a phone number to the customer to send the confirmation.")+'</div></div>')}
+document.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.v){go(b.dataset.v);return}
+ var a=b.dataset.a,id=b.dataset.id;if(!a)return;
+ if(a==="nc"){view="cf";editId=null;render();window.scrollTo(0,0)}
+ else if(a==="ec"){view="cf";editId=id;render();window.scrollTo(0,0)}
+ else if(a==="sc")saveC();
+ else if(a==="back")go(view==="of"?"ord":"cust");
+ else if(a==="dc"){if(arm===editId){var has=orders.some(function(o){return o.cid===editId});if(has){msg="This customer has orders. Delete the orders first.";arm=null;render()}else{data=data.filter(function(x){return x.id!==editId});save();go("cust")}}else{arm=editId;render()}}
+ else if(a==="no"){view="of";editOid=null;preC=id||null;render();window.scrollTo(0,0)}
+ else if(a==="eo"){view="of";editOid=id;render();window.scrollTo(0,0)}
+ else if(a==="so")saveO();
+ else if(a==="do"){if(arm===editOid){orders=orders.filter(function(x){return x.id!==editOid});save();go("ord")}else{arm=editOid;render()}}
+ else if(a==="dlv"){ord(id).done=true;save();render()}
+ else if(a==="paid"){ord(id).pay="Paid";save();render()}
+ else if(a==="rc")openSheet(id);
+ else if(a==="rcx"){sheetId=null;sNote="";drawSheet()}
+ else if(a==="rcshare"){var o1=ord(sheetId);if(o1)shareFile(pdfFile,rcName(o1),"pdf")}
+ else if(a==="rcsave"){var o2=ord(sheetId);if(o2)saveFile(pdfFile,rcName(o2),"pdf")}
+ else if(a==="rcshareimg"){var o3=ord(sheetId);if(o3)shareFile(imgFile,imgName(o3),"image")}
+ else if(a==="rcsaveimg"){var o4=ord(sheetId);if(o4)saveFile(imgFile,imgName(o4),"image")}
+ else if(a==="rccopy")copyImg();
+ else if(a==="bkpdf")doBkPdf();
+ else if(a==="copy"){var s=JSON.stringify({v:2,customers:data,orders:orders}),m=document.getElementById("bkmsg");
+  function ok(){m.textContent="Backup copied. Paste it into WhatsApp or Notes."}
+  function man(){var t=document.getElementById("bk");t.value=s;t.select();m.textContent="Copy failed. The backup is in the box below, so select all and copy it."}
+  try{navigator.clipboard.writeText(s).then(ok,man)}catch(x){man()}}
+ else if(a==="restore"){var m2=document.getElementById("bkmsg");try{var inc=JSON.parse(document.getElementById("bk").value),ic=Array.isArray(inc)?inc:inc.customers,io=Array.isArray(inc)?[]:(inc.orders||[]);
+  var hc={},ho={};data.forEach(function(x){hc[x.id]=1});orders.forEach(function(x){ho[x.id]=1});var n=0;
+  ic.forEach(function(x){if(x&&x.id&&x.name&&!hc[x.id]){data.push(x);n++}});io.forEach(function(x){if(x&&x.id&&!ho[x.id]){orders.push(x);n++}});save();render();document.getElementById("bkmsg").textContent=n+" records restored."}catch(x){m2.textContent="That is not a valid backup. Paste the full backup text."}}
+});
+document.addEventListener("input",function(e){var t=e.target;
+ if(t.id==="q"){filt.q=t.value;var p=t.selectionStart;render();var n=document.getElementById("q");n.focus();n.setSelectionRange(p,p)}
+ else if(/^[qr]\d$/.test(t.id))totalNow()});
+document.addEventListener("change",function(e){if(e.target.id==="fs"){filt.st=e.target.value;render()}if(e.target.id==="fw"){filt.wd=e.target.value;render()}});
+load();render();
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+</script>
+</body>
+</html>
